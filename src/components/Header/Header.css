@@ -1,6 +1,7 @@
 .header {
     text-align: center;
 }
+
 .header img {
     height: 80px;
 }
@@ -14,6 +15,9 @@ nav a {
     color: white;
     margin-right: 20px;
     padding: 6px;
+}
+.header nav button {
+    margin-left: 20px;
 }
 
 nav a:hover {
