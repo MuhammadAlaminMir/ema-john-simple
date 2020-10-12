@@ -52,6 +52,8 @@ const LogInField = ({ user, setUser }) => {
                             email: user.email,
                             photoURL: user.photoURL,
                         };
+
+                        verifyEmail();
                         setUser(signedInUser);
                         setLoggedInUser(signedInUser);
                         history.replace(from);
@@ -97,6 +99,30 @@ const LogInField = ({ user, setUser }) => {
 
         e.preventDefault();
     };
+
+    const verifyEmail = () => {
+        var user = firebase.auth().currentUser;
+
+        user.sendEmailVerification()
+            .then(function () {
+                // Email sent.
+            })
+            .catch(function (error) {
+                // An error happened.
+            });
+    };
+    const resetPassword = (email) => {
+        var auth = firebase.auth();
+
+        auth.sendPasswordResetEmail(email)
+            .then(function () {
+                // Email sent.
+            })
+            .catch(function (error) {
+                // An error happened.
+            });
+    };
+
     return (
         <div className="container">
             <h3>Sign In with Email & Password</h3>
@@ -144,7 +170,13 @@ const LogInField = ({ user, setUser }) => {
                     Submit
                 </Button>
             </Form>
-
+            <br />
+            <button
+                onClick={() => resetPassword(user.email)}
+                className="btn btn-primary"
+            >
+                Forget or Reset Password
+            </button>
             {user.isSignedIn ? (
                 <p style={{ color: 'green' }}>Sign IN Successfully</p>
             ) : (
