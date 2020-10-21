@@ -29,7 +29,9 @@ const GoogleSignUp = ({ user, setUser }) => {
                 console.log(user);
                 setUser(signedInUser);
                 setLoggedInUser(signedInUser);
+
                 history.replace(from);
+                setUserToken();
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -59,3 +61,14 @@ const GoogleSignUp = ({ user, setUser }) => {
 };
 
 export default GoogleSignUp;
+const setUserToken = () => {
+    firebase
+        .auth()
+        .currentUser.getIdToken(/* forceRefresh */ true)
+        .then(function (idToken) {
+            sessionStorage.setItem('token', idToken);
+        })
+        .catch(function (error) {
+            // Handle error
+        });
+};

@@ -12,17 +12,20 @@ const Shop = () => {
     // const first10 = fakeData.slice(0, 10);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
-
+    const [search, setSearch] = useState('');
     useEffect(() => {
-        fetch('http://localhost:5000/products')
+        fetch(
+            'https://alamin-ema-john-project.herokuapp.com/products?search=' +
+                search
+        )
             .then((res) => res.json())
             .then((data) => setProducts(data));
-    }, []);
+    }, [search]);
 
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        fetch('http://localhost:5000/productsByKeys', {
+        fetch('https://alamin-ema-john-project.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,9 +55,19 @@ const Shop = () => {
 
         addToDatabaseCart(product.key, count);
     };
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    };
     return (
         <div className="twin-container">
             <div className="product-container">
+                <input
+                    type="text"
+                    placeholder="search Product"
+                    onBlur={handleSearch}
+                    className="product-search from-control"
+                />
+                {products.length === 0 && <p>loading...</p>}
                 {products.map((product) => (
                     <Product
                         key={product.key}
